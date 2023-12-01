@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #ffffff, #e6e6e6) fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to bottom right, #ffffff, #e6e6e6);
+        }
+
+        .calculator-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button.reset {
+            background-color: #808080;
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        #credit {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        #credit a {
+            color: #333;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+    <title>Deriv Calculatrice de taille de position</title>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <div class="calculator-title">Deriv Calculatrice de taille de position</div>
+
+        <label for="index">Indice :</label>
+        <select id="index">
+            <option value="Volatility10">Volatility10</option>
+            <option value="Volatility10(1s)">Volatility10(1s)</option>
+            <option value="Volatility25">Volatility25</option>
+            <option value="Volatility25(1s)">Volatility25(1s)</option>
+            <option value="Volatility50">Volatility50</option>
+            <option value="Volatility50(1s)">Volatility50(1s)</option>
+            <option value="Volatility75">Volatility75</option>
+            <option value="Volatility75(1s)">Volatility75(1s)</option>
+            <option value="Volatility100">Volatility100</option>
+            <option value="Volatility100(1s)">Volatility100(1s)</option>
+            <option value="Volatility150(1s)">Volatility150(1s)</option>
+            <option value="Volatility200(1s)">Volatility200(1s)</option>
+            <option value="Volatility250(1s)">Volatility250(1s)</option>
+            <option value="Volatility300(1s)">Volatility300(1s)</option>
+            <option value="Step index">Step index</option>
+            <option value="Boom300">Boom300</option>
+            <option value="Boom500">Boom500</option>
+            <option value="Boom1000">Boom1000</option>
+            <option value="Crash300">Crash300</option>
+            <option value="Crash500">Crash500</option>
+            <option value="Crash1000">Crash1000</option>
+            <option value="Jump10">Jump10</option>
+            <option value="Jump25">Jump25</option>
+            <option value="Jump50">Jump50</option>
+            <option value="Jump75">Jump75</option>
+            <option value="Jump100">Jump100</option>
+            <option value="Range break100">Range break100</option>
+            <option value="Range break200">Range break200</option>
+        </select>
+
+        <label for="capital">Capital du compte :</label>
+        <input type="number" id="capital" placeholder="Entrez le capital du compte">
+
+        <label for="riskType">Type de risque :</label>
+        <select id="riskType" onchange="updateRiskPlaceholder()">
+            <option value="montant">Montant</option>
+            <option value="pourcentage">Pourcentage</option>
+        </select>
+
+        <label for="risk">Risque :</label>
+        <input type="number" id="risk" placeholder="Entrez le montant">
+
+        <label for="pipRisk">Nombre de pips risqués :</label>
+        <input type="number" id="pipRisk" placeholder="Entrez le nombre de pips risqués">
+
+        <button onclick="calculate()">Calculer</button>
+        <button class="reset" onclick="resetValues()">Recommencer</button>
+
+        <div id="result"></div>
+
+        <div id="credit">
+            Made by Fbo |
+            <a href="https://www.instagram.com/p/Cc8eHadqM6X/?igshid=NTc4MTIwNjQ2YQ==" target="_blank">Instagram</a> |
+            <a href="https://t.me/fabricefbo" target="_blank">Telegram</a> |
+            <a href="https://t.me/+QjKCePDXU9o0MDA0" target="_blank">Channel</a>
+        </div>
+    </div>
+
+    <script>
+        function updateRiskPlaceholder() {
+            var riskType = document.getElementById('riskType').value;
+            var riskInput = document.getElementById('risk');
+            riskInput.placeholder = "Entrez le " + riskType;
+        }
+
+        function calculate() {
+            var capital = parseFloat(document.getElementById('capital').value);
+            var riskType = document.getElementById('riskType').value;
+            var riskAmount = parseFloat(document.getElementById('risk').value);
+            var pipRisk = parseFloat(document.getElementById('pipRisk').value);
+            var index = document.getElementById('index').value;
+
+            var result = 0;
+            var lotMin = 0;
+
+            switch (index) {
+                case 'Volatility10':
+                case 'Volatility10(1s)':
+                case 'Volatility25':
+                case 'Volatility100':
+                case 'Crash300':
+                    lotMin = 0.5;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility25(1s)':
+                case 'Volatility50(1s)':
+                case 'Volatility250(1s)':
+                    lotMin = 0.005;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Step index':
+                    lotMin = 0.1;
+                    result = riskAmount / pipRisk / 10;
+                    break;
+                case 'Volatility50':
+                    lotMin = 4;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility75':
+                    lotMin = 0.001;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility75(1s)':
+                case 'Volatility200(1s)':
+                    lotMin = 0.05;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility300(1s)':
+                case 'Boom300':
+                    lotMin = 1; // Correction ici
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility100(1s)':
+                case 'Boom500':
+                case 'Boom1000':
+                case 'Crash500':
+                case 'Crash1000':
+                    lotMin = 0.2;
+                    result = riskAmount / pipRisk;
+                    break;
+                case 'Volatility150(1s)':
+                case 'Jump10':
+                case 'Jump25':
+                case 'Jump50':
+                case 'Jump75':
+                case 'Jump100':
+                case 'Range break100':
+                case 'Range break200':
+                    lotMin = 0.01;
+                    result = riskAmount / pipRisk;
+                    break;
+            }
+
+            if (riskType === 'pourcentage') {
+                result = (riskAmount / 100) * capital / pipRisk;
+            }
+
+            var resultDiv = document.getElementById('result');
+
+            if (result < lotMin) {
+                resultDiv.innerHTML = '<p>Résultat : ' + result.toFixed(3) + '</p>';
+                resultDiv.innerHTML += '<p>Lot Minimum : ' + lotMin.toFixed(3) + '</p>';
+            } else {
+                resultDiv.innerHTML = '<p>Résultat : ' + result.toFixed(3) + '</p>';
+            }
+        }
+
+        function resetValues() {
+            document.getElementById('index').selectedIndex = 0;
+            document.getElementById('capital').value = '';
+            document.getElementById('riskType').selectedIndex = 0;
+            document.getElementById('risk').value = '';
+            document.getElementById('risk').placeholder = "Entrez le montant";
+            document.getElementById('pipRisk').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+
+</body>
+
+</html>
