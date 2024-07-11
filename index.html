@@ -111,6 +111,8 @@
             <option value="Volatility250(1s)">Volatility250(1s)</option>
             <option value="Volatility300(1s)">Volatility300(1s)</option>
             <option value="Step index">Step index</option>
+            <option value="Step index 200">Step index 200</option>
+            <option value="Step index 500">Step index 500</option>
             <option value="Boom300">Boom300</option>
             <option value="Boom500">Boom500</option>
             <option value="Boom1000">Boom1000</option>
@@ -187,6 +189,8 @@
                     result = riskAmount / pipRisk;
                     break;
                 case 'Step index':
+                case 'Step index 200':
+                case 'Step index 500':
                     lotMin = 0.1;
                     result = riskAmount / pipRisk / 10;
                     break;
