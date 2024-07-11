@@ -209,7 +209,7 @@
                     break;
                 case 'Volatility300(1s)':
                 case 'Boom300':
-                    lotMin = 1; // Correction ici
+                    lotMin = 1;
                     result = riskAmount / pipRisk;
                     break;
                 case 'Volatility100(1s)':
@@ -234,7 +234,12 @@
             }
 
             if (riskType === 'pourcentage') {
-                result = (riskAmount / 100) * capital / pipRisk;
+                var riskCapital = (riskAmount / 100) * capital;
+                if (index === 'Step index' || index === 'Step index 200' || index === 'Step index 500') {
+                    result = riskCapital / pipRisk / 10;
+                } else {
+                    result = riskCapital / pipRisk;
+                }
             }
 
             var resultDiv = document.getElementById('result');
