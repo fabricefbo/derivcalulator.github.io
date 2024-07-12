@@ -13,7 +13,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .calculator {
@@ -24,6 +24,8 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background: linear-gradient(to bottom right, #ffffff, #e6e6e6);
+            position: relative;
+            z-index: 1;
         }
 
         .calculator-title {
@@ -31,6 +33,9 @@
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background: #ffffff;
         }
 
         label {
@@ -79,10 +84,25 @@
             font-size: 14px;
         }
 
-        #credit a {
-            color: #333;
+        .social-icons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
             margin: 0 10px;
-            text-decoration: none;
+        }
+
+        .social-icons .instagram {
+            background-image: url('instagram_logo.png'); /* Chemin vers votre logo Instagram */
+        }
+
+        .social-icons .telegram {
+            background-image: url('telegram_logo.png'); /* Chemin vers votre logo Telegram */
         }
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
@@ -149,10 +169,12 @@
         <div id="result"></div>
 
         <div id="credit">
-            Made by Fbo |
-            <a href="https://www.instagram.com/p/Cc8eHadqM6X/?igshid=NTc4MTIwNjQ2YQ==" target="_blank">Instagram</a> |
-            <a href="https://t.me/fabricefbo" target="_blank">Telegram</a> |
-            <a href="https://t.me/+QjKCePDXU9o0MDA0" target="_blank">Channel</a>
+            Made by Fbo
+        </div>
+
+        <div class="social-icons">
+            <a href="https://www.instagram.com/p/Cc8eHadqM6X/?igshid=NTc4MTIwNjQ2YQ==" class="instagram" target="_blank" title="Instagram"></a>
+            <a href="https://t.me/fabricefbo" class="telegram" target="_blank" title="Telegram"></a>
         </div>
     </div>
 
@@ -234,11 +256,10 @@
             }
 
             if (riskType === 'pourcentage') {
-                var riskCapital = (riskAmount / 100) * capital;
                 if (index === 'Step index' || index === 'Step index 200' || index === 'Step index 500') {
-                    result = riskCapital / pipRisk / 10;
+                    result = ((riskAmount / 100) * capital) / pipRisk / 10;
                 } else {
-                    result = riskCapital / pipRisk;
+                    result = (riskAmount / 100) * capital / pipRisk;
                 }
             }
 
