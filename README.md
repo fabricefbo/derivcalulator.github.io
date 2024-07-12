@@ -1,1 +1,1 @@
-# derivcalulator.github.io
+# derivcalulator.com
